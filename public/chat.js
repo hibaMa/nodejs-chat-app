@@ -11,6 +11,7 @@ socket.on("message", (message) => {
         createdAt: moment(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', html)
+    $messages.scrollTop = $messages.scrollHeight;
 })
 
 let sendMessage = (e) => {
