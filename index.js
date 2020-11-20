@@ -1,7 +1,8 @@
-express = require("express")
-path = require("path")
-http = require("http")
-socketio = require("socket.io")
+const express = require("express")
+const path = require("path")
+const http = require("http")
+const socketio = require("socket.io")
+const { generateMessage } = require('./utils/message.js')
 
 const app = express()
 const server = http.createServer(app)
@@ -9,12 +10,12 @@ const io = socketio(server)
 
 io.on("connection", (socket) => {
     // emit to the newly connected client
-    socket.emit('message', 'welcome to chat app!')
+    socket.emit('message', generateMessage("welcome to chat app!"))
     //emit to all connected client except the current one
     socket.broadcast.emit('message', 'a new user has joined!')
-    socket.on("clientMessage", (msg, callback) => {
+    socket.on("clientMessage", (message, callback) => {
         //emit to all connected clients
-        io.emit("message", msg)
+        io.emit("message", generateMessage(message))
         callback("ack!")
     })
 
