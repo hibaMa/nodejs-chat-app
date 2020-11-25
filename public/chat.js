@@ -3,9 +3,10 @@ const $sendBtn = document.getElementById("sendBtn")
 const $messages = document.querySelector('#messages')
 //templates
 const messageTemplate = document.querySelector('#message-template').innerHTML
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
 
 //query string in path
-const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+const {username, room} = Qs.parse(location.search, {ignoreQueryPrefix: true})
 
 let socket = io()
 socket.on("message", (message) => {
@@ -16,6 +17,14 @@ socket.on("message", (message) => {
     })
     $messages.insertAdjacentHTML('beforeend', html)
     $messages.scrollTop = $messages.scrollHeight;
+})
+
+socket.on("roomData", ({room, users}) => {
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users
+    })
+    document.querySelector('#sidebar').innerHTML = html
 })
 
 let sendMessage = (e) => {
@@ -29,7 +38,7 @@ let sendMessage = (e) => {
 }
 
 //callback is ack from server
-socket.emit('join', { username, room }, (error) => {
+socket.emit('join', {username, room}, (error) => {
     if (error) {
         alert(error)
         location.href = '/'
