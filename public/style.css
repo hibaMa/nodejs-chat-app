@@ -34,7 +34,7 @@ body {
 }
 
 .sidebar {
-    background: #385898;
+    background: #333744;
 }
 
 form {
@@ -42,6 +42,7 @@ form {
     grid-template-columns: 1fr 100px;
     grid-gap: 10px;
     background: white;
+    margin-bottom: 17px;
 }
 
 .messages > * {
@@ -71,3 +72,4 @@ form {
 .time {
     color: rgba(0, 0, 0, 0.7);
 }
+

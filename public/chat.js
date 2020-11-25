@@ -4,6 +4,9 @@ const $messages = document.querySelector('#messages')
 //templates
 const messageTemplate = document.querySelector('#message-template').innerHTML
 
+//query string in path
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+
 let socket = io()
 socket.on("message", (message) => {
     const html = Mustache.render(messageTemplate, {
@@ -23,3 +26,12 @@ let sendMessage = (e) => {
         $messageInput.value = "";
     })
 }
+
+//callback is ack from server
+socket.emit('join', { username, room }, (error) => {
+    if (error) {
+        alert(error)
+        location.href = '/'
+    }
+})
+
